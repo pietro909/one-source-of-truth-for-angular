@@ -11,7 +11,7 @@ Link to article on SitePoint (if known).
 
 1. Clone repo
 2. Run `npm install`
-3. Run `npm run`
+3. Run `npm start`
 4. Visit http://localhost:3000/
 
 ## License
