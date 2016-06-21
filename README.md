@@ -1,4 +1,4 @@
-# Article Title
+# One Source of Truth for Angular 2
 
 Brief description of the article and what it covers.
 Link to article on SitePoint (if known).
@@ -6,14 +6,13 @@ Link to article on SitePoint (if known).
 ## Requirements
 
 * [Node.js](http://nodejs.org/) (min version if applicable)
-* [MongoDB](https://www.mongodb.org/)
 
 ## Installation Steps (if applicable)
 
 1. Clone repo
 2. Run `npm install`
-3. Run `npm run server`
-4. Visit http://localhost:8080/
+3. Run `npm run`
+4. Visit http://localhost:3000/
 
 ## License
 
