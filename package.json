@@ -4,7 +4,7 @@
     "description": "",
     "author": "Pietro Grandi <pietro.grandi.3d@gmail.com>",
     "homepage": "",
-    "license": "MIT",
+    "license": "ISC",
     "scripts": {
         "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
         "lite": "lite-server",
