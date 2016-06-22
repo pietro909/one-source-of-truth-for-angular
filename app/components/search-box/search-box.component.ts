@@ -1,6 +1,6 @@
 import {Observable} from "rxjs/Rx";
 import {ElementRef, OnInit, Component, Input} from "@angular/core";
-import {CurrentSearch} from "../youtube-search/search.reducer";
+import {CurrentSearch} from "../reducers/search.reducer";
 import {Store} from "@ngrx/store";
 
 @Component({
@@ -12,6 +12,10 @@ import {Store} from "@ngrx/store";
 })
 
 export class SearchBox implements OnInit {
+    
+    static StoreEvents = {
+        text: 'SearchBox:TEXT_CHANGED'
+    };
 
     @Input()
     store: Store<any>;
@@ -25,7 +29,7 @@ export class SearchBox implements OnInit {
             .debounceTime(250)
             .subscribe((text: string) =>
                 this.store.dispatch({
-                    type: 'TEXT',
+                    type: SearchBox.StoreEvents.text,
                     payload: {
                         text: text
                     }
