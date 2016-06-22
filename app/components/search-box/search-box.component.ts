@@ -1,6 +1,7 @@
 import {Observable} from "rxjs/Rx";
 import {ElementRef, OnInit, Component, Input} from "@angular/core";
 import {Store} from "@ngrx/store";
+import {CurrentSearch} from "../reducers/current-search.model";
 
 @Component({
     inputs: ['store'],
@@ -17,7 +18,7 @@ export class SearchBox implements OnInit {
     };
 
     @Input()
-    store: Store<any>;
+    store: Store<CurrentSearch>;
 
     constructor(private el: ElementRef) {}
 

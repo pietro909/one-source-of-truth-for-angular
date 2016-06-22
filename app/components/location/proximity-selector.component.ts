@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {Store} from "@ngrx/store";
+import {CurrentSearch} from "../reducers/current-search.model";
 
 @Component({
     selector: 'proximity-selector',
@@ -28,7 +29,7 @@ export class ProximitySelector {
     };
     
     @Input()
-    store: Store<any>;
+    store: Store<CurrentSearch>;
 
     active = false;
 
