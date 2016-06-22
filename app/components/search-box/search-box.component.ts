@@ -1,6 +1,5 @@
 import {Observable} from "rxjs/Rx";
 import {ElementRef, OnInit, Component, Input} from "@angular/core";
-import {CurrentSearch} from "../reducers/search.reducer";
 import {Store} from "@ngrx/store";
 
 @Component({

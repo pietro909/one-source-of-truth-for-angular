@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {SearchBox} from "./components/search-box/search-box.component";
-import {CurrentSearch, searchReducer} from "./components/reducers/search.reducer";
+import {searchReducer} from "./components/reducers/search.reducer";
 import {Store, provideStore, combineReducers} from "@ngrx/store";
 import {Observable} from "rxjs/Rx";
 import {locationReducer} from "./components/reducers/location.reducer";
 import {ProximitySelector} from "./components/location/proximity-selector.component";
+import {CurrentSearch} from "./components/reducers/current-search.model";
 
 const mainReducer = combineReducers({
     searchByName: searchReducer,
