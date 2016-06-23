@@ -1,7 +1,6 @@
 import { ActionReducer, Action } from '@ngrx/store';
-import {SearchBox} from "../search-box/search-box.component";
-import {CurrentSearch} from "./current-search.model";
-
+import {CurrentSearch} from "../models/current-search.model";
+import {SearchBox} from "../components/search-box.component";
 
 export const searchReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch, action: Action) => {
     switch (action.type) {

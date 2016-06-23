@@ -1,6 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {Store} from "@ngrx/store";
-import {CurrentSearch} from "../reducers/current-search.model";
+import {CurrentSearch} from "../models/current-search.model";
 
 @Component({
     selector: 'proximity-selector',
@@ -10,12 +10,13 @@ import {CurrentSearch} from "../reducers/current-search.model";
         <label for="useLocation">Use current location</label>
         <input type="checkbox" 
             [disabled]="disabled"
-            (change)="turnOnOffLocation($event)">
+            (change)="onLocation($event)">
     </div>
     <div class="input-group">
         <label for="locationRadius">Radius</label>
-        <input type="range" min="1" max="100" value="{{defaultRadius}}"
-            (change)="onRadius($event)"> 
+        <input type="range" min="1" max="100" value="50"
+            [disabled]="!active"
+            (change)="onRadius($event)">
     </div>
     `
 })
@@ -33,9 +34,7 @@ export class ProximitySelector {
 
     active = false;
 
-    defaultRadius = 50;
-
-    turnOnOffLocation($event: any) {
+    onLocation($event: any) {
         this.active = $event.target.checked;
         if (this.active) {
             navigator.geolocation.getCurrentPosition((position: any) => {

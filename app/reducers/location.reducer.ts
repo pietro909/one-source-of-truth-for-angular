@@ -1,6 +1,6 @@
 import { ActionReducer, Action } from '@ngrx/store';
-import {CurrentSearch} from "./current-search.model";
-import {ProximitySelector} from "../location/proximity-selector.component";
+import {CurrentSearch} from "../models/current-search.model";
+import {ProximitySelector} from "../components/proximity-selector.component";
 
 export const locationReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch, action: Action) => {
     switch (action.type) {

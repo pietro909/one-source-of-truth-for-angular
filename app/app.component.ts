@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {SearchBox} from "./components/search-box/search-box.component";
-import {searchReducer} from "./components/reducers/search.reducer";
 import {Store, provideStore, combineReducers} from "@ngrx/store";
 import {Observable} from "rxjs/Rx";
-import {locationReducer} from "./components/reducers/location.reducer";
-import {ProximitySelector} from "./components/location/proximity-selector.component";
-import {CurrentSearch} from "./components/reducers/current-search.model";
+import {ProximitySelector} from "./components/proximity-selector.component";
+import {SearchBox} from "./components/search-box.component";
+import {searchReducer} from "./reducers/search.reducer";
+import {locationReducer} from "./reducers/location.reducer";
+import {CurrentSearch} from "./models/current-search.model";
 
 const mainReducer = combineReducers({
     searchByName: searchReducer,
@@ -28,7 +28,6 @@ const mainReducer = combineReducers({
         <courses-list [searchResults]="results"></courses-list>
     </div>
     `
-
 })
 
 export class AppComponent implements OnInit {
@@ -45,6 +44,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.currentSearch.subscribe((state: CurrentSearch) => {
+            // the logic is here
             console.log(state);
         });
     }

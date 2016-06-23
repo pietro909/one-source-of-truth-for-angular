@@ -1,7 +1,6 @@
 import {Observable} from "rxjs/Rx";
 import {ElementRef, OnInit, Component, Input} from "@angular/core";
 import {Store} from "@ngrx/store";
-import {CurrentSearch} from "../reducers/current-search.model";
 
 @Component({
     inputs: ['store'],
@@ -18,15 +17,14 @@ export class SearchBox implements OnInit {
     };
 
     @Input()
-    store: Store<CurrentSearch>;
+    store: Store<any>;
 
     constructor(private el: ElementRef) {}
 
     ngOnInit(): void {
         Observable.fromEvent(this.el.nativeElement, 'keyup')
             .map((e: any) => e.target.value)
-            .filter((text: string) => text.length > 3 || text.length == 0)
-            .debounceTime(250)
+            .debounceTime(500)
             .subscribe((text: string) =>
                 this.store.dispatch({
                     type: SearchBox.StoreEvents.text,
