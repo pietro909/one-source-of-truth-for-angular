@@ -4,18 +4,12 @@ import {Observable} from "rxjs/Rx";
 import {ProximitySelector} from "./components/proximity-selector.component";
 import {SearchBox} from "./components/search-box.component";
 import {searchReducer} from "./reducers/search.reducer";
-import {locationReducer} from "./reducers/location.reducer";
 import {CurrentSearch} from "./models/current-search.model";
-
-const mainReducer = combineReducers({
-    searchByName: searchReducer,
-    searchByLocation: locationReducer
-});
 
 @Component({
     selector: 'my-app',
     providers: [
-        provideStore({ currentSearch: mainReducer })
+        provideStore({ currentSearch: searchReducer })
     ],
     directives: [ SearchBox, ProximitySelector ],
     template: `
