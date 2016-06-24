@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/pietro909/one-source-of-truth-for-angular.svg?branch=youtube)](https://travis-ci.org/pietro909/one-source-of-truth-for-angular)
 # One Source of Truth for Angular 2
 
 Brief description of the article and what it covers.
