@@ -3,7 +3,7 @@ import {CurrentSearch} from "../models/current-search.model";
 import {SearchBox} from "../components/search-box.component";
 import {ProximitySelector} from "../components/proximity-selector.component";
 
-export const searchReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch, action: Action) => {
+export const SearchReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch, action: Action) => {
     switch (action.type) {
         case SearchBox.StoreEvents.text:
             return Object.assign({}, state, {
@@ -16,14 +16,14 @@ export const searchReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch
                     longitude: action.payload.position.longitude
                 }
             });
+        case ProximitySelector.StoreEvents.radius:
+            return Object.assign({}, state, {
+                radius: action.payload.radius
+            });
         case ProximitySelector.StoreEvents.off:
             return Object.assign({}, state, {
                 position: null,
                 radius: null
-            });
-        case ProximitySelector.StoreEvents.radius:
-            return Object.assign({}, state, {
-                radius: action.payload.radius
             });
         default:
             return state;

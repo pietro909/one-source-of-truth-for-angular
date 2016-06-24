@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {Store, provideStore, combineReducers} from "@ngrx/store";
+import {Store, provideStore} from "@ngrx/store";
 import {Observable} from "rxjs/Rx";
+import {CurrentSearch} from "./models/current-search.model";
 import {ProximitySelector} from "./components/proximity-selector.component";
 import {SearchBox} from "./components/search-box.component";
-import {searchReducer} from "./reducers/search.reducer";
-import {CurrentSearch} from "./models/current-search.model";
+import {SearchReducer} from "./reducers/search.reducer";
+
+const storeManager = provideStore({ currentSearch: SearchReducer });
 
 @Component({
     selector: 'my-app',
-    providers: [
-        provideStore({ currentSearch: searchReducer })
-    ],
+    providers: [ storeManager ],
     directives: [ SearchBox, ProximitySelector ],
     template: `
     <h1>{{title}}</h1>
@@ -18,15 +18,15 @@ import {CurrentSearch} from "./models/current-search.model";
         <search-box [store]="store"></search-box>
         <proximity-selector [store]="store"></proximity-selector>
     </div>
-    <div class="row">
-        <courses-list [searchResults]="results"></courses-list>
-    </div>
+    <p>{{ state | json }}</p>
     `
 })
 
 export class AppComponent implements OnInit {
 
-    title = 'One Source of Truth for Angular 2';
+    title = 'heroes and books'; //One Source of Truth for Angular 2';
+    
+    private state: CurrentSearch;
 
     private currentSearch: Observable<CurrentSearch>;
 
@@ -38,8 +38,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.currentSearch.subscribe((state: CurrentSearch) => {
-            // the logic is here
-            console.log(state);
+            this.state = state;
         });
     }
 
