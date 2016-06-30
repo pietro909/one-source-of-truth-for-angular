@@ -1,11 +1,11 @@
-import {BehaviorSubject, Observable} from "rxjs/Rx";
-import {Injectable} from "@angular/core";
-import {Response, Http} from "@angular/http";
-import {SearchResult} from "../models/search-result.model";
-import {SearchQuery} from "../models/search-query.model";
+import {BehaviorSubject, Observable} from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Response, Http} from '@angular/http';
+import {SearchResult} from '../models/search-result.model';
+import {SearchQuery} from '../models/search-query.model';
 
-const YOUTUBE_API_KEY = "AIzaSyDOfT_BO81aEZScosfTYMruJobmpjqNeEk";
-const YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/search";
+const YOUTUBE_API_KEY = 'AIzaSyDOfT_BO81aEZScosfTYMruJobmpjqNeEk';
+const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 const LOCATION_TEMPLATE = 'location={latitude},{longitude}&locationRadius={radius}km';
 
 

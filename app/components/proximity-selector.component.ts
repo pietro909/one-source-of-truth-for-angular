@@ -1,6 +1,6 @@
-import {Component, Input} from "@angular/core";
-import {Store} from "@ngrx/store";
-import {CurrentSearch} from "../models/current-search.model";
+import {Component, Input} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {CurrentSearch} from '../models/current-search.model';
 
 @Component({
     selector: 'proximity-selector',
