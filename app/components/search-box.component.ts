@@ -1,6 +1,6 @@
-import {Observable} from "rxjs/Rx";
-import {ElementRef, OnInit, Component, Input} from "@angular/core";
-import {Store} from "@ngrx/store";
+import {Observable} from 'rxjs/Rx';
+import {ElementRef, OnInit, Component, Input} from '@angular/core';
+import {Store} from '@ngrx/store';
 
 @Component({
     inputs: ['store'],

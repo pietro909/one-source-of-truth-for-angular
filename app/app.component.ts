@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Store, provideStore} from "@ngrx/store";
-import {Observable} from "rxjs/Rx";
-import {CurrentSearch} from "./models/current-search.model";
-import {ProximitySelector} from "./components/proximity-selector.component";
-import {SearchBox} from "./components/search-box.component";
-import {SearchReducer} from "./reducers/search.reducer";
+import {Store, provideStore} from '@ngrx/store';
+import {Observable} from 'rxjs/Rx';
+import {CurrentSearch} from './models/current-search.model';
+import {ProximitySelector} from './components/proximity-selector.component';
+import {SearchBox} from './components/search-box.component';
+import {SearchReducer} from './reducers/search.reducer';
 
 const storeManager = provideStore({ currentSearch: SearchReducer });
 
@@ -13,18 +13,26 @@ const storeManager = provideStore({ currentSearch: SearchReducer });
     providers: [ storeManager ],
     directives: [ SearchBox, ProximitySelector ],
     template: `
-    <h1>{{title}}</h1>
-    <div class="row">
-        <search-box [store]="store"></search-box>
-        <proximity-selector [store]="store"></proximity-selector>
-    </div>
-    <p>{{ state | json }}</p>
+    <section class="col-md-8">
+        <h1>{{title}}</h1>
+        <div class="row col-md-8">
+            <search-box [store]="store"></search-box>
+            <proximity-selector [store]="store"></proximity-selector>
+        </div>
+        <div class="row col-md-8">
+            <p>
+                Try to type something in the searchbox, play with the location and with radius: the above state will
+                always be consistent and up to date.
+            </p>
+            <p>{{ state | json }}</p>
+        </div>
+    </section>
     `
 })
 
 export class AppComponent implements OnInit {
 
-    title = 'heroes and books'; //One Source of Truth for Angular 2';
+    title = 'One Source of Truth for Angular 2';
     
     private state: CurrentSearch;
 
