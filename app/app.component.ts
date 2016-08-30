@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Store, provideStore} from '@ngrx/store';
 import {Observable} from 'rxjs/Rx';
-import {CurrentSearch} from './models/current-search.model';
 import {ProximitySelector} from './components/proximity-selector.component';
 import {SearchBox} from './components/search-box.component';
 import {SearchReducer} from './reducers/search.reducer';
+import {SearchQuery} from "./models/search-query.model";
 
 const storeManager = provideStore({ currentSearch: SearchReducer });
 
@@ -34,18 +34,18 @@ export class AppComponent implements OnInit {
 
     title = 'One Source of Truth for Angular 2';
     
-    private state: CurrentSearch;
+    private state: SearchQuery;
 
-    private currentSearch: Observable<CurrentSearch>;
+    private currentSearch: Observable<SearchQuery>;
 
     constructor(
-        private store: Store<CurrentSearch>
+        private store: Store<SearchQuery>
     ) {
-        this.currentSearch = this.store.select<CurrentSearch>('currentSearch');
+        this.currentSearch = this.store.select<SearchQuery>('currentSearch');
     }
 
     ngOnInit() {
-        this.currentSearch.subscribe((state: CurrentSearch) => {
+        this.currentSearch.subscribe((state: SearchQuery) => {
             this.state = state;
         });
     }
