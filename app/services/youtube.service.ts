@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable} from 'rxjs/Rx';
+import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {Injectable} from '@angular/core';
 import {Response, Http} from '@angular/http';
 import {SearchResult} from '../models/search-result.model';
@@ -18,7 +18,7 @@ export class YouTubeService {
     
     search(query: SearchQuery): Observable<SearchResult[]>  {
         let params = [
-            `q=${name}`,
+            `q=${query.name}`,
             `key=${YOUTUBE_API_KEY}`,
             `part=snippet`,
             `type=video`,
@@ -26,27 +26,33 @@ export class YouTubeService {
         ];
         
         if (query.location) {
+            const radius = query.location.radius ? query.location.radius : 50;
             const location =
                 LOCATION_TEMPLATE
                     .replace(/\{latitude\}/g, query.location.latitude.toString())
                     .replace(/\{longitude\}/g, query.location.longitude.toString())
-                    .replace(/\{radius\}/g, query.location.radius.toString());
+                    .replace(/\{radius\}/g, radius.toString());
             params.push(location);
         }
         
         const queryUrl: string = `${YOUTUBE_API_URL}?${params.join('&')}`;
+
+        console.log(queryUrl);
         
-        return this.http.get(queryUrl)
+        this.http.get(queryUrl)
             .map((response: Response) => {
                 console.log(response);
-                return (<any>response.json()).items.map(item => {
+                return <any>response.json().items.map(item => {
                     return {
                         id: item.id.videoId,
                         title: item.snippet.title,
                         thumbnailUrl: item.snippet.thumbnails.high.url
                     };
                 });
-            });
+            })
+            .subscribe((results: SearchResult[]) => this.searchResults.next(results));
+
+        return this.searchResults;
     }
 
 }

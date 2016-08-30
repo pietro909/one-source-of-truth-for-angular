@@ -5,6 +5,8 @@ import {ProximitySelector} from './components/proximity-selector.component';
 import {SearchBox} from './components/search-box.component';
 import {SearchReducer} from './reducers/search.reducer';
 import {SearchQuery} from "./models/search-query.model";
+import {YouTubeService} from "./services/youtube.service";
+import {SearchResult} from "./models/search-result.model";
 
 const storeManager = provideStore({ currentSearch: SearchReducer });
 
@@ -26,20 +28,33 @@ const storeManager = provideStore({ currentSearch: SearchReducer });
             </p>
             <p>{{ state | json }}</p>
         </div>
+        <div class="row col-md-8">
+            <ul>
+                <li *ngFor="let result of searchResults">{{ result.title }}</li>
+            </ul>
+        </div>
     </section>
     `
 })
 
+//
+
 export class AppComponent implements OnInit {
 
-    title = 'One Source of Truth for Angular 2';
+    static StoreEvents = {
+        results: 'RESULTS'
+    };
+
+    title = ''; //'One Source of Truth for Angular 2';
     
     private state: SearchQuery;
 
     private currentSearch: Observable<SearchQuery>;
+    private searchResults: SearchResult[] = [];
 
     constructor(
-        private store: Store<SearchQuery>
+        private store: Store<SearchQuery>,
+        private youtube: YouTubeService
     ) {
         this.currentSearch = this.store.select<SearchQuery>('currentSearch');
     }
@@ -47,6 +62,23 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         this.currentSearch.subscribe((state: SearchQuery) => {
             this.state = state;
+            if (state && state.name) {
+                this.youtube.search(state).subscribe((results: SearchResult[]) =>
+                    this.store.dispatch({
+                        type: AppComponent.StoreEvents.results,
+                        payload: {
+                            results: results
+                        }
+                    })
+                )
+            } else {
+                this.store.dispatch({
+                    type: AppComponent.StoreEvents.results,
+                    payload: {
+                        results: []
+                    }
+                })
+            }
         });
     }
 
