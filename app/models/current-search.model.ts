@@ -1,7 +1,6 @@
-
 export interface CurrentSearch {
-    text: string,
-    position: {
+    name: string;
+    location?: {
         latitude: number,
         longitude: number
     },

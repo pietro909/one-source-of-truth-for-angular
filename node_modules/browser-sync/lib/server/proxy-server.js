@@ -45,6 +45,11 @@ var ProxyOption = Immutable.Record({
      * with args [proxyRes, req, res]
      */
     proxyRes:     List([]),
+    /**
+     * Functions to be called on proxy response
+     * with args [proxyReq, req, socket, options, head]
+     */
+    proxyReqWs:   List([]),
     errHandler:   undefined,
     url:          Map({}),
     proxyOptions: Map(defaultHttpProxyOptions),
@@ -66,6 +71,7 @@ module.exports = function createProxyServer (bs, scripts) {
     var target      = opt.get("target");
     var proxyReq    = getProxyReqFunctions(opt.get("proxyReq"), opt, bs);
     var proxyRes    = getProxyResFunctions(opt.get("proxyRes"), opt);
+    var proxyResWs  = opt.get("proxyReqWs");
 
     /**
      * Add the proxy middleware to any given by the user
@@ -99,10 +105,11 @@ module.exports = function createProxyServer (bs, scripts) {
     }
 
     /**
-     * Add any user provided functions for proxyReq and proxyRes
+     * Add any user provided functions for proxyReq, proxyReqWs and proxyRes
      */
-    applyFns("proxyReq", proxyReq);
-    applyFns("proxyRes", proxyRes);
+    applyFns("proxyReq",   proxyReq);
+    applyFns("proxyRes",   proxyRes);
+    applyFns("proxyReqWs", proxyResWs);
 
     /**
      * Handle Proxy errors

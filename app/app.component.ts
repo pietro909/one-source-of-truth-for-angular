@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Store, provideStore} from '@ngrx/store';
 import {Observable} from 'rxjs/Rx';
-import {CurrentSearch} from './models/current-search.model';
 import {ProximitySelector} from './components/proximity-selector.component';
 import {SearchBox} from './components/search-box.component';
 import {SearchReducer} from './reducers/search.reducer';
+import {CurrentSearch} from "./models/current-search.model";
+import {YouTubeService} from "./services/youtube.service";
+import {SearchResult} from "./models/search-result.model";
 
 const storeManager = provideStore({ currentSearch: SearchReducer });
 
@@ -26,6 +28,14 @@ const storeManager = provideStore({ currentSearch: SearchReducer });
             </p>
             <p>{{ state | json }}</p>
         </div>
+        <div class="row col-md-8">
+            <div *ngFor="let result of searchResults" class="thumbnail col-sm-6 col-md-4">
+                <div class="caption">
+                    <h3>{{ result.title }}</h3>
+                </div>
+                <!--<img src="{{ result.thumbnailUrl }}" />-->
+            </div>
+        </div>
     </section>
     `
 })
@@ -37,16 +47,24 @@ export class AppComponent implements OnInit {
     private state: CurrentSearch;
 
     private currentSearch: Observable<CurrentSearch>;
+    private searchResults: SearchResult[] = [];
 
     constructor(
-        private store: Store<CurrentSearch>
+        private store: Store<CurrentSearch>,
+        private youtube: YouTubeService
     ) {
         this.currentSearch = this.store.select<CurrentSearch>('currentSearch');
+        this.youtube.searchResults.subscribe((results: SearchResult[]) => this.searchResults = results);
     }
 
     ngOnInit() {
         this.currentSearch.subscribe((state: CurrentSearch) => {
             this.state = state;
+            if (state && state.name && state.name.length > 0) {
+                this.youtube.search(state)
+            } else {
+                this.searchResults = [];
+            }
         });
     }
 

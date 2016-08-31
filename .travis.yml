@@ -3,4 +3,5 @@ node_js:
   - "4.2"
 before_script:
   - npm install
-script: npm run tsc
+script:
+  - npm run tsc

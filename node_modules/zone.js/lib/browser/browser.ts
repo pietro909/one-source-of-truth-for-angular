@@ -14,7 +14,7 @@ const _global = typeof window == 'undefined' ? global : window;
 patchTimer(_global, set, clear, 'Timeout');
 patchTimer(_global, set, clear, 'Interval');
 patchTimer(_global, set, clear, 'Immediate');
-patchTimer(_global, 'request', 'cancelMacroTask', 'AnimationFrame');
+patchTimer(_global, 'request', 'cancel', 'AnimationFrame');
 patchTimer(_global, 'mozRequest', 'mozCancel', 'AnimationFrame');
 patchTimer(_global, 'webkitRequest', 'webkitCancel', 'AnimationFrame');
 
@@ -55,7 +55,7 @@ function patchXHR(window: any) {
   function scheduleTask(task: Task) {
     var data = <XHROptions>task.data;
     data.target.addEventListener('readystatechange', () => {
-      if (data.target.readyState === XMLHttpRequest.DONE) {
+      if (data.target.readyState === data.target.DONE) {
         if (!data.aborted) {
           task.invoke();
         }

@@ -19,4 +19,3 @@ export class SyncSubject extends Subject {
         super._error(this.errorValue = err);
     }
 }
-//# sourceMappingURL=SyncSubject.js.map

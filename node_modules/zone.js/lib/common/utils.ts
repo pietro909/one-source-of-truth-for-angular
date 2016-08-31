@@ -82,8 +82,9 @@ export function patchProperty(obj, prop) {
     }
   };
 
+  // The getter would return undefined for unassigned properties but the default value of an unassigned property is null
   desc.get = function () {
-    return this[_prop];
+    return this[_prop] || null;
   };
 
   Object.defineProperty(obj, prop, desc);
@@ -260,6 +261,8 @@ export function patchClass(className) {
 
   let prop;
   for (prop in instance) {
+    // https://bugs.webkit.org/show_bug.cgi?id=44721
+    if (className === 'XMLHttpRequest' && prop === 'responseBlob') continue;
     (function (prop) {
       if (typeof instance[prop] === 'function') {
         _global[className].prototype[prop] = function () {

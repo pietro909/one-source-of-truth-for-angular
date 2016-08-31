@@ -6,18 +6,70 @@
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-var keys = require('lodash.keys'),
-    rest = require('lodash.rest');
 
 /** Used as references for various `Number` constants. */
 var MAX_SAFE_INTEGER = 9007199254740991;
 
 /** `Object#toString` result references. */
-var funcTag = '[object Function]',
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
     genTag = '[object GeneratorFunction]';
 
 /** Used to detect unsigned integer values. */
 var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} args The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -27,7 +79,7 @@ var hasOwnProperty = objectProto.hasOwnProperty;
 
 /**
  * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
 var objectToString = objectProto.toString;
@@ -35,12 +87,43 @@ var objectToString = objectProto.toString;
 /** Built-in value references. */
 var propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeKeys = overArg(Object.keys, Object),
+    nativeMax = Math.max;
+
 /** Detect if properties shadowing those on `Object.prototype` are non-enumerable. */
 var nonEnumShadows = !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf');
 
 /**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  // Safari 9 makes `arguments.length` enumerable in strict mode.
+  var result = (isArray(value) || isArguments(value))
+    ? baseTimes(value.length, String)
+    : [];
+
+  var length = result.length,
+      skipIndexes = !!length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) &&
+        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
  * Assigns `value` to `key` of `object` if the existing value is not equivalent
- * using [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
  * for equality comparisons.
  *
  * @private
@@ -57,15 +140,51 @@ function assignValue(object, key, value) {
 }
 
 /**
- * The base implementation of `_.property` without support for deep paths.
+ * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
  *
  * @private
- * @param {string} key The key of the property to get.
- * @returns {Function} Returns the new accessor function.
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
  */
-function baseProperty(key) {
-  return function(object) {
-    return object == null ? undefined : object[key];
+function baseKeys(object) {
+  if (!isPrototype(object)) {
+    return nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ */
+function baseRest(func, start) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = array;
+    return apply(func, this, otherArgs);
   };
 }
 
@@ -90,9 +209,9 @@ function copyObject(source, props, object, customizer) {
 
     var newValue = customizer
       ? customizer(object[key], source[key], key, object, source)
-      : source[key];
+      : undefined;
 
-    assignValue(object, key, newValue);
+    assignValue(object, key, newValue === undefined ? source[key] : newValue);
   }
   return object;
 }
@@ -105,7 +224,7 @@ function copyObject(source, props, object, customizer) {
  * @returns {Function} Returns the new assigner function.
  */
 function createAssigner(assigner) {
-  return rest(function(object, sources) {
+  return baseRest(function(object, sources) {
     var index = -1,
         length = sources.length,
         customizer = length > 1 ? sources[length - 1] : undefined,
@@ -129,19 +248,6 @@ function createAssigner(assigner) {
     return object;
   });
 }
-
-/**
- * Gets the "length" property value of `object`.
- *
- * **Note:** This function is used to avoid a
- * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
- * Safari on at least iOS 8.1-8.3 ARM64.
- *
- * @private
- * @param {Object} object The object to query.
- * @returns {*} Returns the "length" value.
- */
-var getLength = baseProperty('length');
 
 /**
  * Checks if `value` is a valid array-like index.
@@ -198,7 +304,7 @@ function isPrototype(value) {
 
 /**
  * Performs a
- * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
  * comparison between two values to determine if they are equivalent.
  *
  * @static
@@ -210,8 +316,8 @@ function isPrototype(value) {
  * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
  * @example
  *
- * var object = { 'user': 'fred' };
- * var other = { 'user': 'fred' };
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
  *
  * _.eq(object, object);
  * // => true
@@ -231,6 +337,55 @@ function isPrototype(value) {
 function eq(value, other) {
   return value === other || (value !== value && other !== other);
 }
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -258,7 +413,36 @@ function eq(value, other) {
  * // => false
  */
 function isArrayLike(value) {
-  return value != null && isLength(getLength(value)) && !isFunction(value);
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
 }
 
 /**
@@ -269,8 +453,7 @@ function isArrayLike(value) {
  * @since 0.1.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified,
- *  else `false`.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
  * @example
  *
  * _.isFunction(_);
@@ -281,8 +464,7 @@ function isArrayLike(value) {
  */
 function isFunction(value) {
   // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8 which returns 'object' for typed array and weak map constructors,
-  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
   var tag = isObject(value) ? objectToString.call(value) : '';
   return tag == funcTag || tag == genTag;
 }
@@ -290,16 +472,15 @@ function isFunction(value) {
 /**
  * Checks if `value` is a valid array-like length.
  *
- * **Note:** This function is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
  *
  * @static
  * @memberOf _
  * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length,
- *  else `false`.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
  * @example
  *
  * _.isLength(3);
@@ -321,7 +502,7 @@ function isLength(value) {
 
 /**
  * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
  * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
  *
  * @static
@@ -350,6 +531,34 @@ function isObject(value) {
 }
 
 /**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
  * Assigns own enumerable string keyed properties of source objects to the
  * destination object. Source objects are applied from left to right.
  * Subsequent sources overwrite property assignments of previous sources.
@@ -368,18 +577,18 @@ function isObject(value) {
  * @example
  *
  * function Foo() {
- *   this.c = 3;
+ *   this.a = 1;
  * }
  *
  * function Bar() {
- *   this.e = 5;
+ *   this.c = 3;
  * }
  *
- * Foo.prototype.d = 4;
- * Bar.prototype.f = 6;
+ * Foo.prototype.b = 2;
+ * Bar.prototype.d = 4;
  *
- * _.assign({ 'a': 1 }, new Foo, new Bar);
- * // => { 'a': 1, 'c': 3, 'e': 5 }
+ * _.assign({ 'a': 0 }, new Foo, new Bar);
+ * // => { 'a': 1, 'c': 3 }
  */
 var assign = createAssigner(function(object, source) {
   if (nonEnumShadows || isPrototype(source) || isArrayLike(source)) {
@@ -392,5 +601,37 @@ var assign = createAssigner(function(object, source) {
     }
   }
 });
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+}
 
 module.exports = assign;
