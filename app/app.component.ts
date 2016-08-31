@@ -42,7 +42,7 @@ const storeManager = provideStore({ currentSearch: SearchReducer });
 
 export class AppComponent implements OnInit {
 
-    title = ''; //'One Source of Truth for Angular 2';
+    title = 'One Source of Truth for Angular 2';
     
     private state: CurrentSearch;
 
