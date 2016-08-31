@@ -2,7 +2,6 @@ import { ActionReducer, Action } from '@ngrx/store';
 import {SearchBox} from '../components/search-box.component';
 import {ProximitySelector} from '../components/proximity-selector.component';
 import {SearchQuery} from "../models/search-query.model";
-import {AppComponent} from "../app.component";
 
 export const SearchReducer: ActionReducer<SearchQuery> = (state: SearchQuery, action: Action) => {
     switch (action.type) {
@@ -27,10 +26,6 @@ export const SearchReducer: ActionReducer<SearchQuery> = (state: SearchQuery, ac
         case ProximitySelector.StoreEvents.off:
             return Object.assign({}, state, {
                 location: null
-            });
-        case AppComponent.StoreEvents.results:
-            return Object.assign({}, state, {
-                results: action.payload.results
             });
         default:
             return state;

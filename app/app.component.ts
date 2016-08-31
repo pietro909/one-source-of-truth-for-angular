@@ -30,7 +30,10 @@ const storeManager = provideStore({ currentSearch: SearchReducer });
         </div>
         <div class="row col-md-8">
             <ul>
-                <li *ngFor="let result of searchResults">{{ result.title }}</li>
+                <li *ngFor="let result of searchResults">
+                    <h3>{{ result.title }}</h3>
+                    <img src="{{ result.thumbnailUrl }}" />
+                </li>
             </ul>
         </div>
     </section>
@@ -40,10 +43,6 @@ const storeManager = provideStore({ currentSearch: SearchReducer });
 //
 
 export class AppComponent implements OnInit {
-
-    static StoreEvents = {
-        results: 'RESULTS'
-    };
 
     title = ''; //'One Source of Truth for Angular 2';
     
@@ -57,27 +56,16 @@ export class AppComponent implements OnInit {
         private youtube: YouTubeService
     ) {
         this.currentSearch = this.store.select<SearchQuery>('currentSearch');
+        this.youtube.searchResults.subscribe((results: SearchResult[]) => this.searchResults = results);
     }
 
     ngOnInit() {
         this.currentSearch.subscribe((state: SearchQuery) => {
             this.state = state;
-            if (state && state.name) {
-                this.youtube.search(state).subscribe((results: SearchResult[]) =>
-                    this.store.dispatch({
-                        type: AppComponent.StoreEvents.results,
-                        payload: {
-                            results: results
-                        }
-                    })
-                )
+            if (state && state.name && state.name.length > 0) {
+                this.youtube.search(state)
             } else {
-                this.store.dispatch({
-                    type: AppComponent.StoreEvents.results,
-                    payload: {
-                        results: []
-                    }
-                })
+                this.searchResults = [];
             }
         });
     }
