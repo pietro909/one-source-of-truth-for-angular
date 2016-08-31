@@ -26,7 +26,7 @@ export class YouTubeService {
         ];
         
         if (query.location) {
-            const radius = query.location.radius ? query.location.radius : 50;
+            const radius = query.radius ? query.radius : 50;
             const location =
                 LOCATION_TEMPLATE
                     .replace(/\{latitude\}/g, query.location.latitude.toString())

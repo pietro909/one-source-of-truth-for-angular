@@ -29,12 +29,12 @@ const storeManager = provideStore({ currentSearch: SearchReducer });
             <p>{{ state | json }}</p>
         </div>
         <div class="row col-md-8">
-            <ul>
-                <li *ngFor="let result of searchResults">
+            <div *ngFor="let result of searchResults" class="thumbnail col-sm-6 col-md-4">
+                <div class="caption">
                     <h3>{{ result.title }}</h3>
-                    <img src="{{ result.thumbnailUrl }}" />
-                </li>
-            </ul>
+                </div>
+                <!--<img src="{{ result.thumbnailUrl }}" />-->
+            </div>
         </div>
     </section>
     `

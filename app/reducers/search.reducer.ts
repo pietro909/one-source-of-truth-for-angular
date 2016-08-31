@@ -17,11 +17,8 @@ export const SearchReducer: ActionReducer<SearchQuery> = (state: SearchQuery, ac
                 }
             });
         case ProximitySelector.StoreEvents.radius:
-            //const position = Object.assign(state.location)
             return Object.assign({}, state, {
-                location: {
-                    radius: action.payload.radius
-                }
+                radius: action.payload.radius
             });
         case ProximitySelector.StoreEvents.off:
             return Object.assign({}, state, {
