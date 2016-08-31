@@ -1,4 +1,4 @@
-export interface SearchQuery {
+export interface CurrentSearch {
     name: string;
     location?: {
         latitude: number,

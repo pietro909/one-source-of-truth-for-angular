@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Rx';
 import {ProximitySelector} from './components/proximity-selector.component';
 import {SearchBox} from './components/search-box.component';
 import {SearchReducer} from './reducers/search.reducer';
-import {SearchQuery} from "./models/search-query.model";
+import {CurrentSearch} from "./models/current-search.model";
 import {YouTubeService} from "./services/youtube.service";
 import {SearchResult} from "./models/search-result.model";
 
@@ -44,21 +44,21 @@ export class AppComponent implements OnInit {
 
     title = ''; //'One Source of Truth for Angular 2';
     
-    private state: SearchQuery;
+    private state: CurrentSearch;
 
-    private currentSearch: Observable<SearchQuery>;
+    private currentSearch: Observable<CurrentSearch>;
     private searchResults: SearchResult[] = [];
 
     constructor(
-        private store: Store<SearchQuery>,
+        private store: Store<CurrentSearch>,
         private youtube: YouTubeService
     ) {
-        this.currentSearch = this.store.select<SearchQuery>('currentSearch');
+        this.currentSearch = this.store.select<CurrentSearch>('currentSearch');
         this.youtube.searchResults.subscribe((results: SearchResult[]) => this.searchResults = results);
     }
 
     ngOnInit() {
-        this.currentSearch.subscribe((state: SearchQuery) => {
+        this.currentSearch.subscribe((state: CurrentSearch) => {
             this.state = state;
             if (state && state.name && state.name.length > 0) {
                 this.youtube.search(state)

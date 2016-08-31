@@ -2,7 +2,7 @@ import {Observable, BehaviorSubject} from 'rxjs/Rx';
 import {Injectable} from '@angular/core';
 import {Response, Http} from '@angular/http';
 import {SearchResult} from '../models/search-result.model';
-import {SearchQuery} from '../models/search-query.model';
+import {CurrentSearch} from '../models/current-search.model';
 
 const YOUTUBE_API_KEY = 'AIzaSyDOfT_BO81aEZScosfTYMruJobmpjqNeEk';
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
@@ -16,7 +16,7 @@ export class YouTubeService {
 
     constructor( private http: Http ) {}
     
-    search(query: SearchQuery): Observable<SearchResult[]>  {
+    search(query: CurrentSearch): Observable<SearchResult[]>  {
         let params = [
             `q=${query.name}`,
             `key=${YOUTUBE_API_KEY}`,

@@ -1,9 +1,9 @@
 import { ActionReducer, Action } from '@ngrx/store';
 import {SearchBox} from '../components/search-box.component';
 import {ProximitySelector} from '../components/proximity-selector.component';
-import {SearchQuery} from "../models/search-query.model";
+import {CurrentSearch} from "../models/current-search.model";
 
-export const SearchReducer: ActionReducer<SearchQuery> = (state: SearchQuery, action: Action) => {
+export const SearchReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch, action: Action) => {
     switch (action.type) {
         case SearchBox.StoreEvents.text:
             return Object.assign({}, state, {
