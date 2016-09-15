@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 
 @Component({
     selector: 'proximity-selector',
-    inputs: ['store'],
+    inputs: ['store', 'disabled'],
     template: `
     <div class="input-group">
         <label for="useLocation">Use current location</label>
@@ -14,7 +14,7 @@ import {Store} from '@ngrx/store';
     <div class="input-group">
         <label for="locationRadius">Radius</label>
         <input type="range" min="1" max="100" value="50"
-            [disabled]="!active"
+            [disabled]="!active || disabled"
             (change)="onRadius($event)">
     </div>
     `
@@ -30,6 +30,9 @@ export class ProximitySelector {
     
     @Input()
     store: Store<any>;
+
+    @Input()
+    disabled: boolean;
 
     active = false;
 
