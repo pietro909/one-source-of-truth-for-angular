@@ -22,6 +22,7 @@ var AppComponent = (function () {
         this.youtube = youtube;
         this.title = 'One Source of Truth for Angular 2';
         this.searchResults = [];
+        this.disableSearch = false;
         this.currentSearch = this.store.select('currentSearch');
         this.youtube.searchResults.subscribe(function (results) { return _this.searchResults = results; });
     }
@@ -30,9 +31,11 @@ var AppComponent = (function () {
         this.currentSearch.subscribe(function (state) {
             _this.state = state;
             if (state && state.name && state.name.length > 0) {
+                _this.disableSearch = false;
                 _this.youtube.search(state);
             }
             else {
+                _this.disableSearch = true;
                 _this.searchResults = [];
             }
         });
@@ -42,7 +45,7 @@ var AppComponent = (function () {
             selector: 'my-app',
             providers: [storeManager],
             directives: [search_box_component_1.SearchBox, proximity_selector_component_1.ProximitySelector],
-            template: "\n    <section class=\"col-md-8\">\n        <h1>{{title}}</h1>\n        <div class=\"row col-md-8\">\n            <search-box [store]=\"store\"></search-box>\n            <proximity-selector [store]=\"store\"></proximity-selector>\n        </div>\n        <div class=\"row col-md-8\">\n            <p>\n                Try to type something in the searchbox, play with the location and with radius: the above state will\n                always be consistent and up to date.\n            </p>\n            <p>{{ state | json }}</p>\n        </div>\n        <div class=\"row col-md-8\">\n            <div *ngFor=\"let result of searchResults\" class=\"thumbnail col-sm-6 col-md-4\">\n                <div class=\"caption\">\n                    <h3>{{ result.title }}</h3>\n                </div>\n                <!--<img src=\"{{ result.thumbnailUrl }}\" />-->\n            </div>\n        </div>\n    </section>\n    "
+            template: "\n    <section class=\"col-md-8\">\n        <h1>{{title}}</h1>\n        <div class=\"row col-md-8\">\n            <search-box [store]=\"store\"></search-box>\n            <proximity-selector [store]=\"store\" [disabled]=\"disableSearch\"\n                [ngClass]=\"{ disabled: disableSearch }\"></proximity-selector>\n        </div>\n        <div class=\"row col-md-8 alert alert-danger\" *ngIf=\"disableSearch\">\n            <p>Can't use geolocalization with an empty searchbox</p>\n        </div>\n        <div class=\"row col-md-8\">\n            <p>\n                Try to type something in the searchbox, play with the location and with radius: the above state will\n                always be consistent and up to date.\n            </p>\n            <p class=\"state\">{{ state | json }}</p>\n            <p class=\"state\" *ngIf=\"disableSearch\">{ }</p>\n        </div>\n        <h2 *ngIf=\"!disableSearch\">Search results:</h2>\n        <h2 *ngIf=\"disableSearch || searchResults.length == 0\">No results</h2>\n        <div class=\"row col-md-8\">\n            <div *ngFor=\"let result of searchResults\" class=\"thumbnail col-sm-6 col-md-4\">\n                <div class=\"caption\">\n                    <h3>{{ result.title }}</h3>\n                </div>\n                <!--<img src=\"{{ result.thumbnailUrl }}\" />-->\n            </div>\n        </div>\n    </section>\n    "
         }), 
         __metadata('design:paramtypes', [store_1.Store, youtube_service_1.YouTubeService])
     ], AppComponent);

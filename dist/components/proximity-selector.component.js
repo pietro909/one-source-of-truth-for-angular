@@ -55,11 +55,15 @@ var ProximitySelector = (function () {
         core_1.Input(), 
         __metadata('design:type', store_1.Store)
     ], ProximitySelector.prototype, "store", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], ProximitySelector.prototype, "disabled", void 0);
     ProximitySelector = __decorate([
         core_1.Component({
             selector: 'proximity-selector',
-            inputs: ['store'],
-            template: "\n    <div class=\"input-group\">\n        <label for=\"useLocation\">Use current location</label>\n        <input type=\"checkbox\" \n            [disabled]=\"disabled\"\n            (change)=\"onLocation($event)\">\n    </div>\n    <div class=\"input-group\">\n        <label for=\"locationRadius\">Radius</label>\n        <input type=\"range\" min=\"1\" max=\"100\" value=\"50\"\n            [disabled]=\"!active\"\n            (change)=\"onRadius($event)\">\n    </div>\n    "
+            inputs: ['store', 'disabled'],
+            template: "\n    <div class=\"input-group\">\n        <label for=\"useLocation\">Use current location</label>\n        <input type=\"checkbox\" \n            [disabled]=\"disabled\"\n            (change)=\"onLocation($event)\">\n    </div>\n    <div class=\"input-group\">\n        <label for=\"locationRadius\">Radius</label>\n        <input type=\"range\" min=\"1\" max=\"100\" value=\"50\"\n            [disabled]=\"!active || disabled\"\n            (change)=\"onRadius($event)\">\n    </div>\n    "
         }), 
         __metadata('design:paramtypes', [])
     ], ProximitySelector);
