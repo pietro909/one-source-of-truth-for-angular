@@ -3,7 +3,6 @@ import {Store} from '@ngrx/store';
 
 @Component({
     selector: 'proximity-selector',
-    inputs: ['store', 'disabled'],
     template: `
     <div class="input-group">
         <label for="useLocation">Use current location</label>

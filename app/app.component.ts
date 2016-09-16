@@ -4,6 +4,9 @@ import {Store} from "@ngrx/store";
 
 import {CurrentSearch} from "./models/current-search.model";
 import {SearchResult} from "./models/search-result.model";
+import {YouTubeService} from "./services/youtube.service";
+import {SearchBox} from "./components/search-box.component";
+import {ProximitySelector} from "./components/proximity-selector.component";
 
 /*
  <div class="row col-md-8">
@@ -54,11 +57,10 @@ export class AppComponent implements OnInit {
 
     constructor(
         private store: Store<CurrentSearch>,
-        // private youtube: YouTubeService
+        private youtube: YouTubeService
     ) {
         this.currentSearch = this.store.select<CurrentSearch>('currentSearch');
-        console.log(`component~!!!`);
-        // this.youtube.searchResults.subscribe((results: SearchResult[]) => this.searchResults = results);
+        this.youtube.searchResults.subscribe((results: SearchResult[]) => this.searchResults = results);
     }
 
     ngOnInit() {
@@ -66,7 +68,7 @@ export class AppComponent implements OnInit {
             this.state = state;
             if (state && state.name && state.name.length > 0) {
                 this.disableSearch = false;
-                // this.youtube.search(state)
+                this.youtube.search(state)
             } else {
                 this.disableSearch = true;
                 this.searchResults = [];

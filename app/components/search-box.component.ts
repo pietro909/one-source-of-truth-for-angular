@@ -3,7 +3,6 @@ import {ElementRef, OnInit, Component, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 
 @Component({
-    inputs: ['store'],
     selector: 'search-box',
     template: `
     <input type="text" class="form-control" placeholder="Search" autofocus>
