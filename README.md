@@ -1,14 +1,18 @@
 [![Build Status](https://travis-ci.org/pietro909/one-source-of-truth-for-angular.svg?branch=youtube)](https://travis-ci.org/pietro909/one-source-of-truth-for-angular)
 # One Source of Truth for Angular 2
 
-Brief description of the article and what it covers.
-Link to article on SitePoint (if known).
+The components we build for our web-application often host states. Connecting components often means sharing mutable states: this is difficult to manage and leads to inconsistency.
+
+What if we have one place for the state's mutation and let messages do the rest? [ngrx/store](https://github.com/ngrx/store) is an implementation of [Redux](https://github.com/reactjs/redux) for [Angular](https://angular.io/) using [RxJS](http://reactivex.io/rxjs/) that brings this powerful pattern into the Angular world.
+
+This sample application will manage a realtime search using the [YouTube API](https://developers.google.com/youtube/v3/), allowing the user to search for a name and to geo-localize the search results.
 
 ## Requirements
 
-* [Node.js](http://nodejs.org/) (min version if applicable)
+* [Node.js](http://nodejs.org/) v5.x.x or higher
+* [NPM](https://www.npmjs.com/) 3.x.x or higher
 
-## Installation Steps (if applicable)
+## Installation Steps
 
 1. Clone repo
 2. Run `npm install`
