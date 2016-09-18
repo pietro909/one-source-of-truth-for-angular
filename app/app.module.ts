@@ -1,19 +1,13 @@
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import {AppComponent} from "./app.component";
-import {Store, StoreModule} from "@ngrx/store";
-import {SearchReducer} from "./reducers/search.reducer";
-import {YouTubeService} from "./services/youtube.service";
+import {NgModule}      from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from "@angular/http";
-import {SearchBox} from "./components/search-box.component";
-import {ProximitySelector} from "./components/proximity-selector.component";
+import {Store, StoreModule} from "@ngrx/store";
 
-const storeManager = StoreModule.provideStore ({ currentSearch: SearchReducer });
+import {AppComponent} from "./app.component";
 
 @NgModule({
-    imports:      [ BrowserModule, StoreModule, storeManager, HttpModule ],
-    declarations: [ AppComponent, SearchBox, ProximitySelector ],
-    bootstrap:    [ AppComponent ],
-    providers:    [ YouTubeService ]
+    imports:      [ BrowserModule, HttpModule ],
+    declarations: [ AppComponent, ],
+    bootstrap:    [ AppComponent ]
 })
 export class AppModule { }
