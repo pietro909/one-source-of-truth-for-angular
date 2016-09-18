@@ -1,4 +1,3 @@
-/* Master Styles */
 h1 {
     color: #369;
     font-family: Arial, Helvetica, sans-serif;
@@ -11,4 +10,19 @@ h2, h3 {
 }
 body {
     margin: 2em;
+}
+search-box, proximity-selector {
+    display: block;
+    margin-top: 1.2rem;
+    }
+.state {
+    font-family: monospace;
+    font-size: smaller;
+}
+.row {
+    margin-bottom: 1.6rem;
+    margin-top: 1.6rem;
+}
+label.disabled {
+    color: darkgray;
 }
