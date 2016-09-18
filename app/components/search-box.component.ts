@@ -3,7 +3,6 @@ import {ElementRef, OnInit, Component, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 
 @Component({
-    inputs: ['store'],
     selector: 'search-box',
     template: `
     <input type="text" class="form-control" placeholder="Search" autofocus>
@@ -11,7 +10,7 @@ import {Store} from '@ngrx/store';
 })
 
 export class SearchBox implements OnInit {
-    
+
     static StoreEvents = {
         text: 'SearchBox:TEXT_CHANGED'
     };

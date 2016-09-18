@@ -10,11 +10,15 @@ proximity-selector, search-box {
 proximity-selector.disabled {
     color: #b9b9b9;
 }
-div.row {
-    margin-top: 1.6rem;
-}
 .state {
     font-family: monospace;
     font-size: smaller;
     color: darkorange;
+}
+.row {
+    margin-bottom: 1.6rem;
+    margin-top: 1.6rem;
+}
+label.disabled {
+    color: darkgray;
 }

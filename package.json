@@ -1,37 +1,43 @@
 {
-    "name": "osotfa",
-    "version": "0.0.0",
-    "description": "",
-    "author": "Pietro Grandi <pietro.grandi.3d@gmail.com>",
-    "homepage": "",
-    "license": "ISC",
-    "scripts": {
-        "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-        "lite": "lite-server",
-        "postinstall": "typings install",
-        "tsc": "tsc",
-        "tsc:w": "tsc -w",
-        "typings": "typings"
-    },
-    "dependencies": {
-        "@angular/common":  "2.0.0-rc.2",
-        "@angular/compiler":  "2.0.0-rc.2",
-        "@angular/core":  "2.0.0-rc.2",
-        "@angular/http":  "2.0.0-rc.2",
-        "@angular/platform-browser":  "2.0.0-rc.2",
-        "@angular/platform-browser-dynamic":  "2.0.0-rc.2",
-        "@ngrx/core": "~1.0.1",
-        "@ngrx/store": "~2.0.1",
-        "es6-shim": "^0.35.0",
-        "systemjs": "0.19.27",
-        "reflect-metadata": "^0.1.3",
-        "rxjs": "5.0.0-beta.6",
-        "zone.js": "^0.6.12"
-    },
-    "devDependencies": {
-        "concurrently": "^2.0.0",
-        "lite-server": "^2.2.0",
-        "typescript": "^1.8.10",
-        "typings":"^0.8.1"
-    }
+  "name": "osotfa",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Pietro Grandi <pietro.grandi.3d@gmail.com>",
+  "homepage": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "lite": "lite-server",
+    "postinstall": "typings install",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings"
+  },
+  "dependencies": {
+    "@angular/common": "2.0.0",
+    "@angular/compiler": "2.0.0",
+    "@angular/core": "2.0.0",
+    "@angular/forms": "2.0.0",
+    "@angular/http": "2.0.0",
+    "@angular/platform-browser": "2.0.0",
+    "@angular/platform-browser-dynamic": "2.0.0",
+    "@angular/router": "3.0.0",
+    "@angular/upgrade": "2.0.0",
+    "systemjs": "0.19.27",
+    "core-js": "^2.4.1",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "5.0.0-beta.12",
+    "zone.js": "^0.6.23",
+    "angular2-in-memory-web-api": "0.0.20",
+    "bootstrap": "^3.3.6",
+    "es6-shim": "^0.35.0",
+    "@ngrx/core": "^1.2.0",
+    "@ngrx/store": "^2.2.1"
+  },
+  "devDependencies": {
+    "concurrently": "^2.2.0",
+    "lite-server": "^2.2.0",
+    "typescript": "^2.0.2",
+    "typings": "^1.0.4"
+  }
 }
