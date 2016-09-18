@@ -9,12 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var store_1 = require('@ngrx/store');
-var proximity_selector_component_1 = require('./components/proximity-selector.component');
-var search_box_component_1 = require('./components/search-box.component');
-var search_reducer_1 = require('./reducers/search.reducer');
+var store_1 = require("@ngrx/store");
 var youtube_service_1 = require("./services/youtube.service");
-var storeManager = store_1.provideStore({ currentSearch: search_reducer_1.SearchReducer });
 var AppComponent = (function () {
     function AppComponent(store, youtube) {
         var _this = this;
@@ -43,9 +39,7 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            providers: [storeManager],
-            directives: [search_box_component_1.SearchBox, proximity_selector_component_1.ProximitySelector],
-            template: "\n    <section class=\"col-md-8\">\n        <h1>{{title}}</h1>\n        <div class=\"row col-md-8\">\n            <search-box [store]=\"store\"></search-box>\n            <proximity-selector [store]=\"store\" [disabled]=\"disableSearch\"\n                [ngClass]=\"{ disabled: disableSearch }\"></proximity-selector>\n        </div>\n        <div class=\"row col-md-8 alert alert-danger\" *ngIf=\"disableSearch\">\n            <p>Can't use geolocalization with an empty searchbox</p>\n        </div>\n        <div class=\"row col-md-8\">\n            <p>\n                Try to type something in the searchbox, play with the location and with radius: the above state will\n                always be consistent and up to date.\n            </p>\n            <p class=\"state\">{{ state | json }}</p>\n            <p class=\"state\" *ngIf=\"disableSearch\">{ }</p>\n        </div>\n        <h2 *ngIf=\"!disableSearch\">Search results:</h2>\n        <h2 *ngIf=\"disableSearch || searchResults.length == 0\">No results</h2>\n        <div class=\"row col-md-8\">\n            <div *ngFor=\"let result of searchResults\" class=\"thumbnail col-sm-6 col-md-4\">\n                <div class=\"caption\">\n                    <h3>{{ result.title }}</h3>\n                </div>\n                <!--<img src=\"{{ result.thumbnailUrl }}\" />-->\n            </div>\n        </div>\n    </section>\n    "
+            template: "\n    <section class=\"col-md-8\">\n        <h1>{{title}}</h1>\n        <div class=\"row col-md-8\">\n            <search-box [store]=\"store\"></search-box>\n            <proximity-selector [store]=\"store\" [disabled]=\"disableSearch\"\n            [ngClass]=\"{ disabled: disableSearch }\"></proximity-selector>\n        </div>\n        <div class=\"row col-md-8 alert alert-danger\" *ngIf=\"disableSearch\">\n            <p>Can't use geolocalization with an empty searchbox</p>\n        </div>\n        <div class=\"row col-md-8\">\n            <p>\n            Try to type something in the searchbox, play with the location and with radius: the above state will\n            always be consistent and up to date.\n            </p>\n            <p class=\"state\">{{ state | json }}</p>\n            <p class=\"state\" *ngIf=\"disableSearch\">state is empty</p>\n            <h2 *ngIf=\"!disableSearch\">Search results:</h2>\n        </div>\n        <h2 *ngIf=\"disableSearch || searchResults.length == 0\">No results</h2>\n        <div class=\"row col-md-8\">\n            <div *ngFor=\"let result of searchResults\" class=\"thumbnail col-sm-6 col-md-4\">\n                <div class=\"caption\">\n                <h3>{{ result.title }}</h3>\n                </div>\n                <img src=\"{{ result.thumbnailUrl }}\" />\n            </div>\n        </div>\n        </section>\n    "
         }), 
         __metadata('design:paramtypes', [store_1.Store, youtube_service_1.YouTubeService])
     ], AppComponent);

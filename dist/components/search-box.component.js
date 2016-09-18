@@ -38,7 +38,6 @@ var SearchBox = (function () {
     ], SearchBox.prototype, "store", void 0);
     SearchBox = __decorate([
         core_1.Component({
-            inputs: ['store'],
             selector: 'search-box',
             template: "\n    <input type=\"text\" class=\"form-control\" placeholder=\"Search\" autofocus>\n    "
         }), 

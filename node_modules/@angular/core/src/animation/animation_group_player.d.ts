@@ -1,12 +1,17 @@
 import { AnimationPlayer } from './animation_player';
 export declare class AnimationGroupPlayer implements AnimationPlayer {
     private _players;
-    private _subscriptions;
+    private _onDoneFns;
+    private _onStartFns;
     private _finished;
+    private _started;
     parentPlayer: AnimationPlayer;
     constructor(_players: AnimationPlayer[]);
     private _onFinish();
-    onDone(fn: Function): void;
+    init(): void;
+    onStart(fn: () => void): void;
+    onDone(fn: () => void): void;
+    hasStarted(): boolean;
     play(): void;
     pause(): void;
     restart(): void;
