@@ -26,7 +26,7 @@ export class ProximitySelector {
         radius: 'ProximitySelector:RADIUS',
         off: 'ProximitySelector:OFF'
     };
-    
+
     @Input()
     store: Store<any>;
 

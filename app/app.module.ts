@@ -11,7 +11,7 @@ import {ProximitySelector} from "./components/proximity-selector.component";
 const storeManager = StoreModule.provideStore ({ currentSearch: SearchReducer });
 
 @NgModule({
-    imports:      [ BrowserModule, StoreModule, storeManager, HttpModule  ],
+    imports:      [ BrowserModule, StoreModule, storeManager, HttpModule ],
     declarations: [ AppComponent, SearchBox, ProximitySelector ],
     bootstrap:    [ AppComponent ],
     providers:    [ YouTubeService ]

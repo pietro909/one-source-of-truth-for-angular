@@ -10,7 +10,7 @@ import {Store} from '@ngrx/store';
 })
 
 export class SearchBox implements OnInit {
-    
+
     static StoreEvents = {
         text: 'SearchBox:TEXT_CHANGED'
     };
