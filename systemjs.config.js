@@ -40,8 +40,8 @@
                 main: './index.js',
                 defaultExtension: 'js'
             },
-            '@ngrx/core':                   { main: 'index.js', defaultExtension: 'js' },
-            '@ngrx/store':                  { main: 'index.js', defaultExtension: 'js' }
+            '@ngrx/core':                   { main: 'bundles/core.umd.js', defaultExtension: 'js' },
+            '@ngrx/store':                  { main: 'bundles/store.umd.js', defaultExtension: 'js' }
         }
     });
 })(this);
