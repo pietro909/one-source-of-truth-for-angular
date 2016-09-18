@@ -7,6 +7,8 @@ What if we have one place for the state's mutation and let messages do the rest?
 
 This sample application will manage a realtime search using the [YouTube API](https://developers.google.com/youtube/v3/), allowing the user to search for a name and to geo-localize the search results.
 
+Play with the live example here: [live example](https://pietro909.github.io/one-source-of-truth-for-angular/).
+
 ## Requirements
 
 * [Node.js](http://nodejs.org/) v5.x.x or higher
