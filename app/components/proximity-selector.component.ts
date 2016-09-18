@@ -5,14 +5,22 @@ import {Store} from '@ngrx/store';
     selector: 'proximity-selector',
     template: `
     <div class="input-group">
-        <label for="useLocation">Use current location</label>
-        <input type="checkbox" 
+        <label for="useLocation"
+            [ngClass]="{'disabled': disabled}">
+            Use current location
+        </label>
+        <input type="checkbox"
+            id="useLocation"
             [disabled]="disabled"
             (change)="onLocation($event)">
     </div>
     <div class="input-group">
-        <label for="locationRadius">Radius</label>
+        <label for="locationRadius"
+            [ngClass]="{'disabled': !active || disabled}">
+            Radius
+        </label>
         <input type="range" min="1" max="100" value="50"
+            id="locationRadius"
             [disabled]="!active || disabled"
             (change)="onRadius($event)">
     </div>
