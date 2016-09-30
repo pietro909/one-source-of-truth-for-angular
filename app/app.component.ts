@@ -28,7 +28,9 @@ import {YouTubeService} from "./services/youtube.service";
             <p class="state" *ngIf="disableSearch">state is empty</p>
             <h2 *ngIf="!disableSearch">Search results:</h2>
         </div>
-        <h2 *ngIf="disableSearch || searchResults.length == 0">No results</h2>
+        <div class="row col-md-8">
+            <h2 *ngIf="disableSearch || searchResults.length == 0">No results</h2>
+        </div>
         <div class="row col-md-8">
             <div *ngFor="let result of searchResults" class="thumbnail col-sm-6 col-md-4">
                 <div class="caption">
