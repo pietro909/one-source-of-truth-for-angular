@@ -10,20 +10,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
-var app_component_1 = require("./app.component");
-var store_1 = require("@ngrx/store");
-var search_reducer_1 = require("./reducers/search.reducer");
-var youtube_service_1 = require("./services/youtube.service");
 var http_1 = require("@angular/http");
-var search_box_component_1 = require("./components/search-box.component");
+var store_1 = require("@ngrx/store");
+var app_component_1 = require("./app.component");
+var youtube_service_1 = require("./services/youtube.service");
 var proximity_selector_component_1 = require("./components/proximity-selector.component");
+var search_box_component_1 = require("./components/search-box.component");
+var search_reducer_1 = require("./reducers/search.reducer");
 var storeManager = store_1.StoreModule.provideStore({ currentSearch: search_reducer_1.SearchReducer });
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, store_1.StoreModule, storeManager, http_1.HttpModule],
+            imports: [platform_browser_1.BrowserModule, http_1.HttpModule, store_1.StoreModule, storeManager],
             declarations: [app_component_1.AppComponent, search_box_component_1.SearchBox, proximity_selector_component_1.ProximitySelector],
             bootstrap: [app_component_1.AppComponent],
             providers: [youtube_service_1.YouTubeService]
