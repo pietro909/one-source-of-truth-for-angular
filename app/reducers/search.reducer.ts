@@ -14,7 +14,8 @@ export const SearchReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch
                  location: {
                      latitude: action.payload.position.latitude,
                      longitude: action.payload.position.longitude
-                 }
+                 },
+                 error: null
              });
          case ProximitySelector.StoreEvents.radius:
              return Object.assign({}, state, {
@@ -22,8 +23,13 @@ export const SearchReducer: ActionReducer<CurrentSearch> = (state: CurrentSearch
              });
          case ProximitySelector.StoreEvents.off:
              return Object.assign({}, state, {
-                 location: null
+                 location: null,
+                 error: null
              });
+        case ProximitySelector.StoreEvents.error:
+            return Object.assign({}, state, {
+                error: action.payload.message
+            });
         default:
             return state;
     }

@@ -4,5 +4,6 @@ export interface CurrentSearch {
         latitude: number,
         longitude: number
     },
-    radius: number
+    radius: number,
+    error?: string
 }

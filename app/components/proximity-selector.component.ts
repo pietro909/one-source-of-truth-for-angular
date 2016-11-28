@@ -32,7 +32,8 @@ export class ProximitySelector {
     static StoreEvents = {
         position: 'ProximitySelector:POSITION',
         radius: 'ProximitySelector:RADIUS',
-        off: 'ProximitySelector:OFF'
+        off: 'ProximitySelector:OFF',
+        error: 'ProximitySelector:ERROR'
     };
 
     @Input()
@@ -44,20 +45,33 @@ export class ProximitySelector {
     active = false;
 
     onLocation($event: any) {
-        this.active = $event.target.checked;
-        if (this.active) {
-            navigator.geolocation.getCurrentPosition((position: any) => {
-                this.store.dispatch({
-                    type: ProximitySelector.StoreEvents.position,
-                    payload: {
-                        position: {
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude
+        if ($event.target.checked) {
+            navigator.geolocation.getCurrentPosition(
+                (position: any) => {
+                    this.active = true;
+                    this.store.dispatch({
+                        type: ProximitySelector.StoreEvents.position,
+                        payload: {
+                            position: {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude
+                            }
                         }
-                    }
-                });
-            });
+                    });
+                },
+                (error: any) => {
+                    this.disabled = true;
+                    this.active = false;
+                    this.store.dispatch({
+                        type: ProximitySelector.StoreEvents.error,
+                        payload: {
+                            message: error.message
+                        }
+                    });
+                }
+            );
         } else {
+            this.active = false;
             this.store.dispatch({
                 type: ProximitySelector.StoreEvents.off,
                 payload: {}

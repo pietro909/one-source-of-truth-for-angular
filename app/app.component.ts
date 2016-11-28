@@ -13,11 +13,14 @@ import {YouTubeService} from "./services/youtube.service";
         <h1>{{title}}</h1>
         <div class="row col-md-8">
             <search-box [store]="store"></search-box>
-            <proximity-selector [store]="store" [disabled]="disableSearch"
+            <proximity-selector [store]="store" [disabled]="disableSearch || errorLocation"
             [ngClass]="{ disabled: disableSearch }"></proximity-selector>
         </div>
-        <div class="row col-md-8 alert alert-danger" *ngIf="disableSearch">
+        <div class="row col-md-8 alert alert-danger" *ngIf="errorEmptySearch">
             <p>Can't use geolocalization with an empty searchbox</p>
+        </div>
+        <div class="row col-md-8 alert alert-warning" *ngIf="errorLocation">
+            <p>{{ errorLocationMessage }}</p>
         </div>
         <div class="row col-md-8">
             <p>
@@ -50,6 +53,9 @@ export class AppComponent implements OnInit {
     private currentSearch: Observable<CurrentSearch>;
     private searchResults: SearchResult[] = [];
     private disableSearch = false;
+    private errorEmptySearch = true;
+    private errorLocation = false;
+    private errorLocationMessage = '';
 
     constructor(
         private store: Store<CurrentSearch>,
@@ -64,10 +70,18 @@ export class AppComponent implements OnInit {
             this.state = state;
             if (state && state.name && state.name.length > 0) {
                 this.disableSearch = false;
+                this.errorEmptySearch = false;
                 this.youtube.search(state)
             } else {
                 this.disableSearch = true;
+                this.errorEmptySearch = true;
                 this.searchResults = [];
+            }
+            if (state && state.error) {
+              this.errorLocation = true;
+              this.errorLocationMessage = state.error;
+            } else {
+              this.errorLocation = false;
             }
         });
     }
