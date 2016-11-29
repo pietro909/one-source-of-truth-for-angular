@@ -9,18 +9,21 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 250%;
 }
-proximity-selector, search-box {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 1.2rem;
+h2, h3 {
+    color: #444;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
 }
-proximity-selector.disabled {
-    color: #b9b9b9;
+body {
+    margin: 2em;
 }
+search-box, proximity-selector {
+    display: block;
+    margin-top: 1.2rem;
+    }
 .state {
     font-family: monospace;
     font-size: smaller;
-    color: darkorange;
 }
 .row {
     margin-bottom: 1.6rem;

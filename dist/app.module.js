@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var platform_browser_1 = require('@angular/platform-browser');
+var core_1 = require("@angular/core");
+var platform_browser_1 = require("@angular/platform-browser");
 var http_1 = require("@angular/http");
 var store_1 = require("@ngrx/store");
 var app_component_1 = require("./app.component");
@@ -21,16 +21,16 @@ var storeManager = store_1.StoreModule.provideStore({ currentSearch: search_redu
 var AppModule = (function () {
     function AppModule() {
     }
-    AppModule = __decorate([
-        core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, http_1.HttpModule, store_1.StoreModule, storeManager],
-            declarations: [app_component_1.AppComponent, search_box_component_1.SearchBox, proximity_selector_component_1.ProximitySelector],
-            bootstrap: [app_component_1.AppComponent],
-            providers: [youtube_service_1.YouTubeService]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppModule);
     return AppModule;
 }());
+AppModule = __decorate([
+    core_1.NgModule({
+        imports: [platform_browser_1.BrowserModule, http_1.HttpModule, store_1.StoreModule, storeManager],
+        declarations: [app_component_1.AppComponent, search_box_component_1.SearchBox, proximity_selector_component_1.ProximitySelector],
+        bootstrap: [app_component_1.AppComponent],
+        providers: [youtube_service_1.YouTubeService]
+    }),
+    __metadata("design:paramtypes", [])
+], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

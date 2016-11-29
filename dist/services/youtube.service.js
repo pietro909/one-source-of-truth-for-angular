@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var Rx_1 = require('rxjs/Rx');
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
+var Rx_1 = require("rxjs/Rx");
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
 var YOUTUBE_API_KEY = 'AIzaSyDOfT_BO81aEZScosfTYMruJobmpjqNeEk';
 var YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 var LOCATION_TEMPLATE = 'location={latitude},{longitude}&locationRadius={radius}km';
@@ -22,8 +22,8 @@ var YouTubeService = (function () {
     YouTubeService.prototype.search = function (query) {
         var _this = this;
         var params = [
-            ("q=" + query.name),
-            ("key=" + YOUTUBE_API_KEY),
+            "q=" + query.name,
+            "key=" + YOUTUBE_API_KEY,
             "part=snippet",
             "type=video",
             "maxResults=50"
@@ -52,11 +52,11 @@ var YouTubeService = (function () {
             .subscribe(function (results) { return _this.searchResults.next(results); });
         return this.searchResults;
     };
-    YouTubeService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], YouTubeService);
     return YouTubeService;
 }());
+YouTubeService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], YouTubeService);
 exports.YouTubeService = YouTubeService;
 //# sourceMappingURL=youtube.service.js.map
