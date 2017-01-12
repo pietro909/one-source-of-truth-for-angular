@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/pietro909/one-source-of-truth-for-angular.svg?branch=youtube)](https://travis-ci.org/pietro909/one-source-of-truth-for-angular)
 # One Source of Truth for Angular 2
 
+This repository contains the code for the article published on SitePoint [Managing State in Angular 2](https://www.sitepoint.com/managing-state-angular-2-ngrx/)
+
 The components we build for our web-application often host states. Connecting components often means sharing mutable states: this is difficult to manage and leads to inconsistency.
 
 What if we have one place for the state's mutation and let messages do the rest? [ngrx/store](https://github.com/ngrx/store) is an implementation of [Redux](https://github.com/reactjs/redux) for [Angular](https://angular.io/) using [RxJS](http://reactivex.io/rxjs/) that brings this powerful pattern into the Angular world.
